@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
+
 @RestController
 @RequestMapping(ValidateController.BASE_ENDPOINT)
 public class ValidateController extends BaseController {
@@ -25,7 +27,7 @@ public class ValidateController extends BaseController {
     }
 
     @PostMapping(POST_VALIDATE_PASSWORD)
-    public ResponseEntity<ValidDto> validatePassWord(@RequestBody final PasswordDto request) {
+    public ResponseEntity<ValidDto> validatePassWord(@Valid @RequestBody final PasswordDto request) {
 
         return buildPostValidateResponse(
                 service.isValid(request.getPassword()));
