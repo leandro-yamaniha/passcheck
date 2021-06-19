@@ -1,5 +1,6 @@
 package com.lsy.passcheck.unit.controller;
 
+import com.lsy.passcheck.controller.ApiControllerAdvice;
 import com.lsy.passcheck.controller.ValidateController;
 import com.lsy.passcheck.utils.JsonUtils;
 import com.lsy.passcheck.dto.PasswordDto;
@@ -15,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.mockito.ArgumentMatchers.anyString;
@@ -46,11 +48,12 @@ class ValidateControllerTest {
     void setup() {
         mockMvc = MockMvcBuilders
                 .standaloneSetup(controller)
+                .setControllerAdvice(new ApiControllerAdvice())
                 .build();
     }
 
     @Test
-    void whenIsOK() throws Exception {
+    void okWhenPassWordIsValid() throws Exception {
 
         PasswordDto request = new PasswordDto("test");
         mockValid(true);
@@ -63,7 +66,7 @@ class ValidateControllerTest {
     }
 
     @Test
-    void whenIsBadRequest() throws Exception{
+    void badRequestWhenPasswordIsInvalid() throws Exception{
 
         PasswordDto request = new PasswordDto("test");
         mockValid(false);
@@ -71,6 +74,39 @@ class ValidateControllerTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.valid").exists())
                 .andExpect(jsonPath("$.valid").value("false"));
+
+    }
+
+    @Test
+    void badRequestWhenMalformedRequestBody() throws Exception {
+
+        getPerformPostValidatePassword("test")
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors.message").value("Malformed request body"));
+
+    }
+
+    @Test
+    void badRequestWhenPasswordIsNull() throws Exception {
+
+        getPerformPostValidatePassword(new PasswordDto())
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors.password").exists());
+
+    }
+
+    @Test
+    void badRequestWhenPasswordIsEmpty() throws Exception {
+
+        getPerformPostValidatePassword(new PasswordDto(""))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors").exists())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.errors.password").exists());
 
     }
 
@@ -84,11 +120,17 @@ class ValidateControllerTest {
 
     private ResultActions getPerformPostValidatePassword(PasswordDto request) throws Exception {
 
+        return getPerformPostValidatePassword(JsonUtils.toString(request));
+
+    }
+
+    private ResultActions getPerformPostValidatePassword(String request) throws Exception {
+
         return mockMvc.perform(
                 post(POST_VALIDATE_PASSWORD_ENDPOINT)
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(JsonUtils.toString(request))
+                        .content(request)
         );
 
     }
