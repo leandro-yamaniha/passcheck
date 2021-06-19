@@ -1,0 +1,6 @@
+version: '2.2'
+services:
+  sonarqube:
+    image: sonarqube:latest
+    ports:
+      - "9000:9000"
