@@ -33,16 +33,15 @@ Nota: Espaços em branco não devem ser considerados como caracteres válidos.
 
 **Java 11 - SDKMAN:**
 
-```sh
 [Instalação SDKMAN](https://sdkman.io/install)
+```sh
 sdk i java 11.0.2-open
 ```
 
 **Maven**
 
-```sh
 [Instalação Maven](https://maven.apache.org/install.html)
-```
+
 
 # Execução e Compilação
 
