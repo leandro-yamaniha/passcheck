@@ -63,7 +63,7 @@ java -jar target/passcheck-0.0.1-SNAPSHOT.jar
 **Testes do enpoint**
 
 Podem ser realizados os testes de 2 formas:
-- Como o projeto implementa o uso de openapi, é gerado um front para testes no endpoint via swagger ui, que é acessado por : http://localhost:8080/swagger-ui,html
+- Como o projeto implementa o uso de openapi, é gerado um front para testes no endpoint via swagger ui, que é acessado por : http://localhost:8080/swagger-ui.html
 - Ou via curl, postman ou qualquer cliente que faça consumo de api REST, como por exemplo o postman. 
 
 ```sh
