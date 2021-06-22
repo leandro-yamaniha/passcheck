@@ -20,7 +20,7 @@ public class ApiControllerAdvice {
     public ErrorDto handleValidationExceptions(
             final MethodArgumentNotValidException e) {
         final Map<String, String> errors = new HashMap<>();
-        e.getBindingResult().getAllErrors().forEach((error) -> {
+        e.getBindingResult().getAllErrors().forEach(error -> {
             final String fieldName = ((FieldError) error).getField();
             final String errorMessage = error.getDefaultMessage();
             errors.put(fieldName, errorMessage);
