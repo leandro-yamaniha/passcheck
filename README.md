@@ -25,7 +25,7 @@ A senha a ser validada será informada no body da requisição do endpoint, verb
   "password": "senha"
 }
 ```
-Quando a senha for vâlida serã retornado o httpStatus 200, com o seguinte body:
+Quando a senha for vâlida será retornado o httpStatus 200, com o seguinte body:
 ```
 { "valid": true }
 ```
@@ -35,7 +35,7 @@ Quando a senha for inválida será retornado , httpStatus 400 e o seguinte respo
 { "valid": false }
 ```
 
-Se for gerado o body invâlido serâ retornado httpStatus 400, com o atributo errors.
+Se for gerado o body invâlido será retornado httpStatus 400, com o atributo errors.
 Exemplo:
 ```
 curl -X POST \
@@ -130,5 +130,13 @@ Podem ser realizados os testes de 2 formas:
 ```sh
 curl -X POST "http://localhost:8080/validate/password" -H  "accept: */*" -H  "Content-Type: application/json" -d "{\"password\":\"AbTp9!fok\"}"
 ```
+
+# Outras informações
+
+Foi incluido no projeto : 
+- check style
+- jacoo para medir cobertura, além da trava de cobertura minima de 90%, além do relatório de coverage
+- apache pmd para analise de código
+- foi utilizado sonarqube, através da imagem docker, acessado via : docker-compose up -d. Neste caso é necessário ter o docker instalado.
 
 
