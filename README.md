@@ -17,6 +17,67 @@ Será exposto um endpoint que validará a senha de acordo com as seguintes defin
 - Não possuir caracteres repetidos dentro do conjunto
 Nota: Espaços em branco não devem ser considerados como caracteres válidos.
 
+Para validar a senha foi usado expressão regular (Regex).
+A senha a ser validada será informada no body da requisição do endpoint, verbo POST, http://localhost:8080/validate/password, ,cujo o payload será:
+
+```
+{
+  "password": "senha"
+}
+```
+Quando a senha for vâlida serã retornado o httpStatus 200, com o seguinte body:
+```
+{ "valid": true }
+```
+
+Quando a senha for inválida será retornado , httpStatus 400 e o seguinte response body:
+```
+{ "valid": false }
+```
+
+Se for gerado o body invâlido serâ retornado httpStatus 400, com o atributo errors.
+Exemplo:
+```
+curl -X POST \
+  http://localhost:8080/validate/password \
+  -H 'accept: */*' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: 2a95c68a-221f-aa2f-b0ed-1cd93f326f55'
+```
+
+Response Body com HttpStatus 400 :
+```
+{
+    "errors": {
+        "message": "Malformed request body"
+    }
+}
+```
+
+Se for informado senha null. 
+Exemplo:
+````
+curl -X POST \
+  http://localhost:8080/validate/password \
+  -H 'accept: */*' \
+  -H 'cache-control: no-cache' \
+  -H 'content-type: application/json' \
+  -H 'postman-token: f2e6ef07-2398-f213-4610-7cb297cbd075' \
+  -d '{
+	"password":null
+}'
+````
+
+O response body serâ:
+````
+{
+    "errors": {
+        "password": "não deve ser nulo"
+    }
+}
+````
+
 # Requisitos
 
 [Java 11](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html)
