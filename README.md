@@ -131,18 +131,4 @@ Podem ser realizados os testes de 2 formas:
 curl -X POST "http://localhost:8080/validate/password" -H  "accept: */*" -H  "Content-Type: application/json" -d "{\"password\":\"AbTp9!fok\"}"
 ```
 
-O request deverá ser realizado com o verbo POST na url http://localhost:8080/validate/password, com o seguinte request body:
-```
-{ "password": "AbTp9!fok"  }
-```
-
-Sendo informado o valor da senha no atributo password, para ser validado, quando ocorrer sucesso irá retornar httpStatus 200 e response body será:
-```
-{ "valid": true }
-```
-
-Quando a senha for inválida será retornado , httpStatus 400 e o seguinte response body:
-```
-{ "valid": false }
-```
 
